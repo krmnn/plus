@@ -2,18 +2,32 @@
 
 /* appearance */
 static const char font[]            = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*";
-static const char normbordercolor[] = "#444444";
-static const char normbgcolor[]     = "#222222";
-static const char normfgcolor[]     = "#bbbbbb";
-static const char selbordercolor[]  = "#005577";
-static const char selbgcolor[]      = "#005577";
-static const char selfgcolor[]      = "#eeeeee";
+static const char normbordercolor[] = "#2b2b2b";
+static const char normbgcolor[]     = "#ffffff";
+static const char normfgcolor[]     = "#000000";
+static const char selbordercolor[]  = "#295083";
+static const char selbgcolor[]      = "#295083";
+static const char selfgcolor[]      = "#ffffff";
+
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
 static const Bool systray_enable	= True;
 static const int systray_spacing	= 6;
+
+static const char* colors[NumColors][ColLast] = {
+    // border          foreground   background
+    { normbordercolor, normfgcolor, normbgcolor },  // normal
+    { selbordercolor,  selfgcolor,  selbgcolor  },  // selected
+    { normbordercolor, normfgcolor, "#73d216"    },  // warning
+    { normbordercolor, selfgcolor,  "#4c4c4c"  },  // error
+    { "#dadada",       selfgcolor,  "#000000"  },  // delim
+    { normbordercolor, normfgcolor, "#ef2929" },  // hot red
+    { normbordercolor, normfgcolor, "#edd400" },  // medium yellow
+    { normbordercolor, normfgcolor, "#73d216" },  // cool green
+};
+
 
 /* tagging */
 static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
@@ -102,6 +116,7 @@ static Button buttons[] = {
 	/* click                event mask      button          function        argument */
 	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
 	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+	{ ClkWinTitle,          0,              Button1,        focusonclick,   {0} },
 	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
 	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
 	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
