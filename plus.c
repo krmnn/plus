@@ -269,7 +269,6 @@ static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
 static void cycle(const Arg *arg);
 static int shifttag(int dist);
-static void tagcycle(const Arg *arg);
 
 static Bool systray_acquire(void);
 static void systray_add(Window win);
@@ -2479,13 +2478,6 @@ shifttag(int dist) {
 void
 cycle(const Arg *arg) {
    const Arg a = { .i = shifttag(arg->i) };
-   view(&a);
-}
-
-void
-tagcycle(const Arg *arg) {
-   const Arg a = { .i = shifttag(arg->i) };
-   tag(&a);
    view(&a);
 }
 
