@@ -1939,7 +1939,7 @@ setup(void) {
 	sw = DisplayWidth(dpy, screen);
 	sh = DisplayHeight(dpy, screen);
 	bh = dc.h = dc.font.height + 2;  
-	if(bh < barheight) bh = dc.h = barheight;
+	if(bh < maxbarheight) bh = dc.h = maxbarheight;
 	updategeom();
 	/* init atoms */
 	wmatom[WMProtocols] = XInternAtom(dpy, "WM_PROTOCOLS", False);
