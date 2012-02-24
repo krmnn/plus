@@ -267,6 +267,9 @@ static int xerror(Display *dpy, XErrorEvent *ee);
 static int xerrordummy(Display *dpy, XErrorEvent *ee);
 static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
+static void cycle(const Arg *arg);
+static int shifttag(int dist);
+static void tagcycle(const Arg *arg);
 
 static Bool systray_acquire(void);
 static void systray_add(Window win);
@@ -2459,6 +2462,31 @@ systray_update(void) {
 	XMoveResizeWindow(dpy, traywin, pos, 0, x, bh);
 
 	return;
+}
+
+int
+shifttag(int dist) {
+   int seltags = selmon->tagset[selmon->seltags] & TAGMASK;
+
+   if(dist > 0) // left circular shift
+       seltags = (seltags << dist) | (seltags >> (LENGTH(tags) - dist));
+   else // right circular shift
+       seltags = (seltags >> (- dist)) | (seltags << (LENGTH(tags) + dist));
+
+   return seltags;
+}
+
+void
+cycle(const Arg *arg) {
+   const Arg a = { .i = shifttag(arg->i) };
+   view(&a);
+}
+
+void
+tagcycle(const Arg *arg) {
+   const Arg a = { .i = shifttag(arg->i) };
+   tag(&a);
+   view(&a);
 }
 
 int
