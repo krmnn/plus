@@ -1,21 +1,15 @@
 /* See LICENSE file for copyright and license details. */
 
-/* appearance */
-static const char font[]            = "-*-terminus-medium-r-*-*-16-*-*-*-*-*-*-*";
+/* font */
+static const char font[]            = "-*-helvetica-medium-r-*-*-12-*-*-*-*-*-*-*";
+
+/* colors */
 static const char normbordercolor[] = "#2b2b2b";
 static const char normbgcolor[]     = "#ffffff";
 static const char normfgcolor[]     = "#000000";
 static const char selbordercolor[]  = "#295083";
 static const char selbgcolor[]      = "#295083";
 static const char selfgcolor[]      = "#ffffff";
-
-static const unsigned int borderpx  = 1;        /* border pixel of windows */
-static const unsigned int snap      = 32;       /* snap pixel */
-static const Bool showbar           = True;     /* False means no bar */
-static const Bool topbar            = True;     /* False means bottom bar */
-static const Bool systray_enable	= True;
-static const int systray_spacing	= 6;
-
 static const char* colors[NumColors][ColLast] = {
     // border          foreground   background
     { normbordercolor, normfgcolor, normbgcolor },  // normal
@@ -29,32 +23,48 @@ static const char* colors[NumColors][ColLast] = {
 };
 
 
+static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int snap      = 32;       /* snap pixel */
+
+static const Bool showbar           = True;     /* False means no bar */
+static const Bool topbar            = True;     /* False means bottom bar */
+static const int barheight			= 22;
+
+static const Bool systray_enable	= True;
+static const int systray_spacing	= 3;
+
+
 /* tagging */
-static const char *tags[] = { "1", "2", "3", "4", "5", "6", "7", "8", "9" };
+static const char *tags[] = { "term", "web", "dev", "media", "vm", "rdesktop", "misc"};
 
 static const Rule rules[] = {
-	/* xprop(1):
-	 *	WM_CLASS(STRING) = instance, class
-	 *	WM_NAME(STRING) = title
-	 */
-	/* class      instance    title       tags mask     isfloating   monitor */
-	{ "Gimp",     NULL,       NULL,       0,            True,        -1 },
-	{ "Firefox",  NULL,       NULL,       1 << 8,       False,       -1 },
+    /* class            instance    title       tags mask     isfloating   monitor */
+    { "Gimp",           NULL,       NULL,       0,            True,        -1 },
+    { "Firefox",        NULL,       NULL,       1 << 1,       False,       -1 },
+    { "Google-chrome",  NULL,       NULL,       1 << 1,       False,       -1 },
+    { "Eclipse",        NULL,       NULL,       1 << 2,       False,       -1 },
+    { NULL,             "urxvt",    "krmnn.de", 1 << 0,       False,       -1 },
+    { NULL,             "urxvt",    "chantal",  1 << 0,       False,       -1 },
+    { NULL,             "urxvt",    "mephisto", 1 << 0,       False,       -1 },
+    { "Virt-manager",   NULL,       NULL,       1 << 4,       False,       -1 },
 };
 
 /* layout(s) */
-static const float mfact      = 0.55; /* factor of master area size [0.05..0.95] */
+static const float mfact      = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster      = 1;    /* number of clients in master area */
-static const Bool resizehints = True; /* True means respect size hints in tiled resizals */
+static const Bool resizehints = False; /* True means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
-	/* symbol     arrange function */
-	{ "[]=",      tile },    /* first entry is default */
-	{ "><>",      NULL },    /* no layout function means floating behavior */
-	{ "[M]",      monocle },
- 	{ "TTT",      bstack },
- 	{ "===",      bstackhoriz },
+    /* symbol     arrange function */
+    { "[tile]",     tile },    /* first entry is default */
+    { "[float]",    NULL },    /* no layout function means floating behavior */
+    { "[monocle]",  monocle },
+    { "[grid]",     gaplessgrid },
+    { "[bstack]",   bstack },
+    { "[hstack]",   bstackhoriz },
 };
+
+
 
 /* key definitions */
 #define MODKEY Mod1Mask
