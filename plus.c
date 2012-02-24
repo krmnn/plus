@@ -231,6 +231,7 @@ static Client *nexttiled(Client *c);
 static void pop(Client *);
 static void propertynotify(XEvent *e);
 static void quit(const Arg *arg);
+static void reapply(const Arg *arg);
 static Monitor *recttomon(int x, int y, int w, int h);
 static void resize(Client *c, int x, int y, int w, int h, Bool interact);
 static void resizeclient(Client *c, int x, int y, int w, int h);
@@ -1662,6 +1663,19 @@ propertynotify(XEvent *e) {
 	}
 
 }
+
+void 
+reapply(const Arg *arg) { 
+	Monitor *m;
+	Client *c; 
+
+	for(m = mons; m; m = m->next) {
+		for(c = m->clients; c; c = c->next) { 
+			applyrules(c); 
+		} 
+		arrange(m); 
+	}
+} 
 
 void
 quit(const Arg *arg) {
