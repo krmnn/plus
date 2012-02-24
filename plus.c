@@ -868,7 +868,6 @@ void drawbar(Monitor *m) {
 	unsigned int i, n = 0, occ = 0, urg = 0;
 	unsigned long *col;
 	Client *c, *firstvis, *lastvis = NULL;
-	DC seldc;
 
 	for(c = m->clients; c; c = c->next) {
 		if(ISVISIBLE(c))
@@ -931,14 +930,13 @@ void drawbar(Monitor *m) {
 	for(c = m->clients; c && !ISVISIBLE(c); c = c->next);
 	firstvis = c;
 
-	col = m == selmon ? dc.sel : dc.norm;
+	col = (m == selmon) ? dc.sel : dc.norm;
 	dc.w = dc.x - x;
 	dc.x = x;
 
 	if(n > 0) {
 		mw = dc.w / n;
 		extra = 0;
-		seldc = dc;
 		i = 0;
 
 		while(c) {
@@ -961,15 +959,31 @@ void drawbar(Monitor *m) {
 			dc.w = MIN(ow, tw);
 
 			if(dc.w > mw) dc.w = mw;
-			if(m->sel == c) seldc = dc;
 			if(c == lastvis) dc.w = ow;
 
-			drawtext(c->name, col, False);
-			if(c != firstvis) drawvline(col);
-			drawsquare(c->isfixed, c->isfloating, False, col);
+			if(selmon->sel == c) {
+				drawtext(c->name, dc.sel, False);
+				drawsquare(c->isfixed, c->isfloating, False, dc.sel);
+			} else {
+				drawtext(c->name, dc.norm, False);
+				drawsquare(c->isfixed, c->isfloating, False, dc.norm);
+			}
+
+			if(c != firstvis) drawvline(barcolors[ColDelim]);
 
 			dc.x += dc.w;
 			dc.w = ow - dc.w;
+
+			//			if(dc.w > mw) dc.w = mw;
+			//			if(m->sel == c) seldc = dc;
+			//			if(c == lastvis) dc.w = ow;
+			//
+			//			drawtext(c->name, col, False);
+			//			if(c != firstvis) drawvline(col);
+			//			drawsquare(c->isfixed, c->isfloating, False, col);
+			//
+			//			dc.x += dc.w;
+			//			dc.w = ow - dc.w;
 			for(c = c->next; c && !ISVISIBLE(c); c = c->next);
 		} else {
 			drawtext(NULL, dc.norm, False);
@@ -977,11 +991,11 @@ void drawbar(Monitor *m) {
 		}
 	}
 
-	if(m == selmon && m->sel && ISVISIBLE(m->sel)) {
-		dc = seldc;
-		drawtext(m->sel->name, col, True);
-		drawsquare(m->sel->isfixed, m->sel->isfloating, True, col);
-	}
+	//if(m == selmon && m->sel && ISVISIBLE(m->sel)) {
+	//	dc = seldc;
+	//	drawtext(m->sel->name, col, True);
+	//	drawsquare(m->sel->isfixed, m->sel->isfloating, True, col);
+	//}
 
 	XCopyArea(dpy, dc.drawable, m->barwin, dc.gc, 0, 0, m->ww, bh, 0, 0);
 	XSync(dpy, False);
