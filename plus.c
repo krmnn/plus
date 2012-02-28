@@ -1992,6 +1992,7 @@ setup(void) {
 	updatebars();
 	updatestatus();
 	systray_acquire();
+
 	/* EWMH support per view */
 	XChangeProperty(dpy, root, netatom[NetSupported], XA_ATOM, 32,
 			PropModeReplace, (unsigned char *) netatom, NetLast);
@@ -2540,6 +2541,7 @@ zoom(const Arg *arg) {
 Bool 
 systray_acquire(void) {
 	XSetWindowAttributes wattr;
+	XEvent ev;
 
 	if(!systray_enable || traywin) return False;
 
@@ -2568,6 +2570,22 @@ systray_acquire(void) {
 		fprintf(stderr, "System tray: can't get systray manager\n");
 		return False;
 	}
+
+
+    /*  
+     * Selection managers are required to broadcast their existence when
+     * they become selection managers.
+     */
+    ev.type = ClientMessage;
+    ev.xclient.message_type = XInternAtom (dpy, "MANAGER", False);
+    ev.xclient.format = 32; 
+    ev.xclient.data.l[0] = CurrentTime;
+    ev.xclient.data.l[1] = netatom[NetSystemTray]; 
+    ev.xclient.data.l[2] = traywin;
+    ev.xclient.data.l[3] = 0;
+    ev.xclient.data.l[4] = 0;
+    XSendEvent (dpy, DefaultRootWindow(dpy), False, StructureNotifyMask, &ev);
+
 	XSync(dpy, False);
 
 	return True;
