@@ -68,7 +68,9 @@ enum { NetSupported, NetWMName, NetWMState,
 	NetWMWindowTypeDialog,NetSystemTray, NetLast };     /* EWMH atoms */
 enum { WMProtocols, WMDelete, WMState, WMTakeFocus, WMLast }; /* default atoms */
 enum { ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle,
-	ClkClientWin, ClkRootWin, ClkLast };             /* clicks */
+	ClkClientWin, ClkRootWin, ClkLast };             	/* clicks */
+enum { ColNorm, ColSel, ColUrg, ColErr, ColDelim, 		/* extended colors */
+	ColHot, ColMed, ColCool, NumColors };
 
 typedef union {
 	int i;
@@ -171,7 +173,6 @@ struct Systray {
 	Systray *next, *prev;
 };
 
-enum { ColNorm, ColSel, ColUrg, ColErr, ColDelim, ColHot, ColMed, ColCool, NumColors };
 
 /* function declarations */
 static void applyrules(Client *c);
@@ -279,7 +280,6 @@ static int xerrorstart(Display *dpy, XErrorEvent *ee);
 static void zoom(const Arg *arg);
 static void cycle(const Arg *arg);
 static int shifttag(int dist);
-
 static Bool systray_acquire(void);
 static void systray_add(Window win);
 static void systray_del(Systray *s);
@@ -319,12 +319,10 @@ static Display *dpy;
 static DC dc;
 static Monitor *mons = NULL, *selmon = NULL;
 static Window root;
-unsigned long barcolors[NumColors][ColLast];
-static int globalborder ;
-
-
-Systray *trayicons;
 Window traywin;
+unsigned long barcolors[NumColors][ColLast];
+static int globalborder;
+Systray *trayicons;
 
 /* configuration, allows nested code to access above variables */
 #include "config.h"
