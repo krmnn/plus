@@ -25,13 +25,14 @@ static const char* colors[NumColors][ColLast] = {
 
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
+static const unsigned int gappx     = 3;        /* gap pixel between windows */
 
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
-static const int maxbarheight			= 20;
+static const int maxbarheight		= 20;		/* maximum bar height */
 
-static const Bool systray_enable	= True;
-static const int systray_spacing	= 3;
+static const Bool systray_enable	= True;		/* Enable system tray */
+static const int systray_spacing	= 3;		/* gap between tray icons */
 
 
 /* tagging */
