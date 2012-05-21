@@ -24,8 +24,8 @@ static const char* colors[NumColors][ColLast] = {
 
 
 static const unsigned int borderpx  = 2;        /* border pixel of windows */
-static const unsigned int snap      = 32;       /* snap pixel */
-static const unsigned int gappx     = 3;        /* gap pixel between windows */
+static const unsigned int snap      = 20;       /* snap pixel */
+static const unsigned int gappx     = 4;        /* gap pixel between windows */
 
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
@@ -47,12 +47,13 @@ static const Rule rules[] = {
     { NULL,             "urxvt",    "chantal",  1 << 0,       False,       -1 },
     { NULL,             "urxvt",    "mephisto", 1 << 0,       False,       -1 },
     { "Virt-manager",   NULL,       NULL,       1 << 4,       False,       -1 },
+    { "rdesktop",   	NULL,       NULL,       1 << 5,       False,       -1 },
 };
 
 /* layout(s) */
 static const float mfact      = 0.50; /* factor of master area size [0.05..0.95] */
 static const int nmaster      = 1;    /* number of clients in master area */
-static const Bool resizehints = False; /* True means respect size hints in tiled resizals */
+static const Bool resizehints = True; /* True means respect size hints in tiled resizals */
 
 static const Layout layouts[] = {
     /* symbol     arrange function */
@@ -83,14 +84,18 @@ static const char *dmenucmd[] = { "dmenu-cached", NULL };
 static const char *dmenurebuildcmd[] = { "dmenu-run", NULL };
 static const char *termcmd[]  = { "urxvt", NULL };
 static const char *lockcmd[]  = { "xlock", NULL };
+static const char *volupcmd[]  = { "/usr/bin/amixer", "sset", "Master", "5%+", NULL };
+static const char *voldowncmd[]  = { "/usr/bin/amixer", "sset", "Master", "5%-", NULL };
 
 static Key keys[] = {
 	/* modifier                     key        function        argument */
-	{ 0,                       	XK_Pause,  spawn,          {.v = lockcmd } },
+	{ 0,                       		XK_Pause,  spawn,          {.v = lockcmd } },
+	{ MODKEY,                  		XK_period, spawn,          {.v = volupcmd } },
+	{ MODKEY,                 		XK_comma,  spawn,          {.v = voldowncmd } },
 	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
 	{ MODKEY|ShiftMask,             XK_p,      spawn,          {.v = dmenurebuildcmd } },
 	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-	{ MODKEY,                       XK_r,      reapply,      {0} },
+	{ MODKEY,                       XK_r,      reapply,        {0} },
 	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
 	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
 	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
@@ -114,8 +119,8 @@ static Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
-    { MODKEY|ShiftMask,           	XK_k,      cycle,       {.i = -1 } },
-    { MODKEY|ShiftMask,           	XK_j,      cycle,       {.i = +1 } },
+    { MODKEY|ShiftMask,           	XK_k,      cycle,          {.i = -1 } },
+    { MODKEY|ShiftMask,           	XK_j,      cycle,          {.i = +1 } },
 	TAGKEYS(                        XK_1,                      0)
 	TAGKEYS(                        XK_2,                      1)
 	TAGKEYS(                        XK_3,                      2)
