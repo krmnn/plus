@@ -7,7 +7,7 @@ static const char font[]            = "-*-helvetica-medium-r-*-*-12-*-*-*-*-*-*-
 static const char normbordercolor[] = "#2b2b2b";
 static const char normbgcolor[]     = "#ffffff";
 static const char normfgcolor[]     = "#000000";
-static const char selbordercolor[]  = "#295083";
+static const char selbordercolor[]  = "#eeeeec";
 static const char selbgcolor[]      = "#295083";
 static const char selfgcolor[]      = "#ffffff";
 static const char* colors[NumColors][ColLast] = {
@@ -30,8 +30,8 @@ static const unsigned int gappx     = 4;        /* gap pixel between windows */
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
 
-static const Bool systray_enable	= True;		/* Enable system tray */
-static const int systray_spacing	= 3;		/* gap between tray icons */
+static const unsigned int systrayspacing = 3;   /* systray spacing */
+static const Bool showsystray       = True;     /* False means no systray */
 
 
 /* tagging */
