@@ -263,7 +263,6 @@ static void resizerequest(XEvent *e);
 static void restack(Monitor *m);
 static void run(void);
 static void scan(void);
-/*static Bool sendevent(Client *c, Atom proto); */
 static Bool sendevent(Window w, Atom proto, int m, long d0, long d1, long d2, long d3, long d4);
 static void sendmon(Client *c, Monitor *m);
 static void setclientstate(Client *c, long state);
@@ -767,7 +766,6 @@ configurenotify(XEvent *e) {
 			updatebars();
 			for(m = mons; m; m = m->next)
 				resizebarwin(m);
-			//XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, m->ww, bh);
 			focus(NULL);
 			arrange(NULL);
 		}
@@ -927,7 +925,7 @@ dirtomon(int dir) {
 }
 
 void drawbar(Monitor *m) {
-	int x, a= 0, s= 0, ow, mw = 0, extra, tw;
+	int x, a = 0, s = 0, ow, mw = 0, extra, tw;
 	char posbuf[10];
 	unsigned int i, n = 0, occ = 0, urg = 0;
 	unsigned long *col;
@@ -957,10 +955,6 @@ void drawbar(Monitor *m) {
 	dc.x += dc.w;
 	x = dc.x;
 	if(m == selmon) { /* status is only drawn on selected monitor */
-		if(showsystray && m == selmon) {
-			dc.x -= getsystraywidth();
-		}
-
 		if(m->lt[m->sellt]->arrange == monocle){
 			dc.x= x;
 			for(c= nexttiled(m->clients), a= 0, s= 0; c; c= nexttiled(c->next), a++)
@@ -971,24 +965,33 @@ void drawbar(Monitor *m) {
 			snprintf(posbuf, LENGTH(posbuf), "[%d/%d]", s, a);
 			dc.w= TEXTW(posbuf);
 			drawtext(posbuf, dc.norm, False);
-			x= dc.x + dc.w;
+			x = dc.x + dc.w;
 		}
 
-		dc.w=0;
-		char *buf = stext, *ptr = buf;
-		while( *ptr ) {
-			for( i = 0; *ptr < 0 || *ptr > NumColors; i++, ptr++);
+		/* status text */
+		dc.w = 0;
+		char *buf = stext;
+		char *ptr = buf;
+		while(*ptr) {
+			for(i = 0; *ptr < 0 || *ptr > NumColors; i++, ptr++);
 			dc.w += textnw(buf,i);
-			buf=++ptr;
+			buf = ++ptr;
 		}
-		dc.w+=dc.font.height;
+		dc.w += dc.font.height;
 
 		dc.x = m->ww - dc.w;
-		if(m->primary == 1) dc.x -= getsystraywidth(); // subtract systray width
+		//if(m->primary == 1) dc.x -= getsystraywidth(); // subtract systray width
+		
+
 		if(dc.x < x) {
 			dc.x = x;
 			dc.w = m->ww - x;
 		}
+
+		if(showsystray && m == selmon) {
+			dc.x -= getsystraywidth();
+		}
+
 		m->titlebarend=dc.x;
 		drawcoloredtext(m, stext);
 	}
@@ -1333,7 +1336,6 @@ getatomprop(Client *c, Atom prop) {
 	if(prop == xatom[XembedInfo])
 		req = xatom[XembedInfo];
 
-	//	if(XGetWindowProperty(dpy, c->win, prop, 0L, sizeof atom, False, XA_ATOM,
 	if(XGetWindowProperty(dpy, c->win, prop, 0L, sizeof atom, False, req, &da, &di, &dl, &dl, &p) == Success && p) {
 		atom = *(Atom *)p;
 		if(da == xatom[XembedInfo] && dl == 2)
@@ -1523,7 +1525,6 @@ void
 killclient(const Arg *arg) {
 	if(!selmon->sel)
 		return;
-	//	if(!sendevent(selmon->sel, wmatom[WMDelete])) {
 	if(!sendevent(selmon->sel->win, wmatom[WMDelete], NoEventMask, wmatom[WMDelete], CurrentTime, 0 , 0, 0)) {
 		XGrabServer(dpy);
 		XSetErrorHandler(xerrordummy);
@@ -1817,7 +1818,6 @@ removesystrayicon(Client *i) {
 	free(i);
 }
 
-
 void
 resizebarwin(Monitor *m) {
 	unsigned int w = m->ww;
@@ -1826,15 +1826,11 @@ resizebarwin(Monitor *m) {
 	XMoveResizeWindow(dpy, m->barwin, m->wx, m->by, w, bh);
 }
 
-
-
 void
 resize(Client *c, int x, int y, int w, int h, Bool interact) {
 	if(applysizehints(c, &x, &y, &w, &h, interact))
 		resizeclient(c, x, y, w, h);
 }
-
-
 
 void
 resizeclient(Client *c, int x, int y, int w, int h) {
@@ -2016,7 +2012,6 @@ setclientstate(Client *c, long state) {
 }
 
 Bool
-//sendevent(Client *c, Atom proto) {
 sendevent(Window w, Atom proto, int mask, long d0, long d1, long d2, long d3, long d4) {
 	int n;
 	Atom *protocols, mt;
@@ -2055,7 +2050,6 @@ void
 setfocus(Client *c) {
 	if(!c->neverfocus)
 		XSetInputFocus(dpy, c->win, RevertToPointerRoot, CurrentTime);
-	//sendevent(c, wmatom[WMTakeFocus]);
 	sendevent(c->win, wmatom[WMTakeFocus], NoEventMask, wmatom[WMTakeFocus], CurrentTime, 0, 0, 0);
 }
 
@@ -2286,7 +2280,6 @@ void
 togglebar(const Arg *arg) {
 	selmon->showbar = selmon->pertag->showbars[selmon->pertag->curtag] = !selmon->showbar;
 	updatebarpos(selmon);
-	//	XMoveResizeWindow(dpy, selmon->barwin, selmon->wx, selmon->by, selmon->ww, bh);
 	resizebarwin(selmon);
 	if(showsystray) {
 		XWindowChanges wc;
@@ -2424,7 +2417,6 @@ updatebars(void) {
 	for(m = mons; m; m = m->next) {
 		if (m->barwin)
 			continue;
-		//m->barwin = XCreateWindow(dpy, root, m->wx, m->by, m->ww, bh, 0, DefaultDepth(dpy, screen),
 		w = m->ww;
 		if(showsystray && m == selmon)
 			w -= getsystraywidth();
@@ -2533,7 +2525,6 @@ updatesystray(void) {
 	XMoveResizeWindow(dpy, systray->win, x, selmon->by, w, bh);
 	XSync(dpy, False);
 }
-
 
 void
 updatebarpos(Monitor *m) {
