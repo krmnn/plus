@@ -983,16 +983,16 @@ void drawbar(Monitor *m) {
 		//if(m->primary == 1) dc.x -= getsystraywidth(); // subtract systray width
 		
 
-		if(dc.x < x) {
-			dc.x = x;
-			dc.w = m->ww - x;
-		}
+		//if(dc.x < x) {
+	//		dc.x = x;
+//			dc.w = m->ww - x;
+//		}
 
 		if(showsystray && m == selmon) {
 			dc.x -= getsystraywidth();
 		}
 
-		m->titlebarend=dc.x;
+		m->titlebarend = dc.x;
 		drawcoloredtext(m, stext);
 	}
 	else {
