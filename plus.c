@@ -1637,7 +1637,7 @@ monocle(Monitor *m) {
 	if(n > 0) /* override layout symbol */
 		snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
 	for(c = nexttiled(m->clients); c; c = nexttiled(c->next))
-		resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, False);
+		resizeclient(c, m->wx - c->bw, m->wy - c->bw, m->ww, m->wh);
 }
 
 void
@@ -1842,7 +1842,7 @@ resizeclient(Client *c, int x, int y, int w, int h) {
 	} else {
 		if (selmon->lt[selmon->sellt]->arrange == monocle) { 
 			/* monocle */
-			globalborder = 0 - borderpx;
+			globalborder = 0;
 		} else { 
 			/* other layouts */
 			globalborder = gappx;
@@ -1853,10 +1853,16 @@ resizeclient(Client *c, int x, int y, int w, int h) {
 	c->x = wc.x = x + globalborder;
 	c->oldy = c->y; 
 	c->y = wc.y = y + globalborder;
-	c->oldw = c->w; 
-	c->w = wc.width = w - (2 * globalborder);
+
 	c->oldh = c->h; 
 	c->h = wc.height = h - (2 * globalborder);
+	c->oldw = c->w; 
+	c->w = wc.width = w - (2 * globalborder);
+
+	//if (selmon->lt[selmon->sellt]->arrange == monocle) { 
+	//	c->h = wc.height = h + globalborder;
+	//	c->w = wc.width = w + globalborder;
+	//}
 
 	wc.border_width = c->bw;
 
@@ -2266,12 +2272,11 @@ tile(Monitor *m) {
 	for(i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
 		if(i < m->nmaster) {
 			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
-			resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), False);
-			my += HEIGHT(c);
+			resize(c, m->wx, m->wy + my, mw - c->bw, h - (2 * c->bw), False);
 		}
 		else {
 			h = (m->wh - ty) / (n - i);
-			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), False);
+			resize(c, m->wx + mw, m->wy + ty, m->ww - mw - c->bw, h - (2 * c->bw), False);
 			ty += HEIGHT(c) + globalborder;
 		}
 }
