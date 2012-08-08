@@ -7,8 +7,8 @@ static const char font[]            = "-*-helvetica-medium-r-*-*-12-*-*-*-*-*-*-
 static const char normbordercolor[] = "#2b2b2b";
 static const char normbgcolor[]     = "#ffffff";
 static const char normfgcolor[]     = "#000000";
-static const char selbordercolor[]  = "#eeeeec";
-static const char selbgcolor[]      = "#295083";
+static const char selbordercolor[]  = "#5B7FA5";
+static const char selbgcolor[]      = "#5B7FA5";
 static const char selfgcolor[]      = "#ffffff";
 static const char* colors[NumColors][ColLast] = {
     // border          foreground   background
@@ -35,7 +35,7 @@ static const Bool showsystray       = True;     /* False means no systray */
 
 
 /* tagging */
-static const char *tags[] = { "term", "web", "dev", "media", "vm", "rdesktop", "misc"};
+static const char *tags[] = { "ssh", "web", "dev", "media", "virt", "windows", "misc"};
 
 static const Rule rules[] = {
     /* class            instance    title       tags mask     isfloating   monitor */
