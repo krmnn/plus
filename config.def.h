@@ -23,9 +23,9 @@ static const char* colors[NumColors][ColLast] = {
 };
 
 
-static const unsigned int borderpx  = 2;        /* border pixel of windows */
+static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 20;       /* snap pixel */
-static const unsigned int gappx     = 4;        /* gap pixel between windows */
+static const unsigned int gappx     = 3;        /* gap pixel between windows */
 
 static const Bool showbar           = True;     /* False means no bar */
 static const Bool topbar            = True;     /* False means bottom bar */
