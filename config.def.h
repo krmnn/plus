@@ -7,8 +7,8 @@ static const char font[]            = "-*-helvetica-medium-r-*-*-12-*-*-*-*-*-*-
 static const char normbordercolor[] = "#2b2b2b";
 static const char normbgcolor[]     = "#ffffff";
 static const char normfgcolor[]     = "#000000";
-static const char selbordercolor[]  = "#5B7FA5";
-static const char selbgcolor[]      = "#5B7FA5";
+static const char selbordercolor[]  = "#295083";
+static const char selbgcolor[]      = "#295083";
 static const char selfgcolor[]      = "#ffffff";
 static const char* colors[NumColors][ColLast] = {
     // border          foreground   background
