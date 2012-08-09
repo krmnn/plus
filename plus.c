@@ -924,7 +924,8 @@ dirtomon(int dir) {
 	return m;
 }
 
-void drawbar(Monitor *m) {
+void 
+drawbar(Monitor *m) {
 	int x, a = 0, s = 0, ow, mw = 0, extra, tw;
 	char posbuf[10];
 	unsigned int i, n = 0, occ = 0, urg = 0;
@@ -978,20 +979,17 @@ void drawbar(Monitor *m) {
 			buf = ++ptr;
 		}
 		dc.w += dc.font.height;
-
+		// titlebar
 		dc.x = m->ww - dc.w;
-		//if(m->primary == 1) dc.x -= getsystraywidth(); // subtract systray width
+
+		if(dc.x < x) {
+			dc.x = x;
+			dc.w = m->ww - x;
+		}
 		
-
-		//if(dc.x < x) {
-	//		dc.x = x;
-//			dc.w = m->ww - x;
-//		}
-
 		if(showsystray && m == selmon) {
 			dc.x -= getsystraywidth();
 		}
-
 		m->titlebarend = dc.x;
 		drawcoloredtext(m, stext);
 	}
