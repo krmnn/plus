@@ -10,16 +10,18 @@ static const char normfgcolor[]     = "#000000";
 static const char selbordercolor[]  = "#295083";
 static const char selbgcolor[]      = "#295083";
 static const char selfgcolor[]      = "#ffffff";
+
+
 static const char* colors[NumColors][ColLast] = {
     // border          foreground   background
-    { normbordercolor, normfgcolor, normbgcolor },  // normal
-    { selbordercolor,  selfgcolor,  selbgcolor  },  // selected
-    { normbordercolor, normfgcolor, "#73d216"    },  // warning
-    { normbordercolor, selfgcolor,  "#4c4c4c"  },  // error
-    { "#dadada",       selfgcolor,  "#000000"  },  // delim
-    { normbordercolor, normfgcolor, "#ef2929" },  // hot red
-    { normbordercolor, normfgcolor, "#edd400" },  // medium yellow
-    { normbordercolor, normfgcolor, "#73d216" },  // cool green
+    { normbordercolor, "#000000", "#ffffff" },  // black
+    { selbordercolor,  "#ffffff", "#cc0000" }, // red
+    { normbordercolor, "#ffffff", "#4e9a06" },  // green
+    { normbordercolor, "#000000", "#F6C909" },  // yellow
+    { normbordercolor, "#ffffff", "#295083" },  // blue
+    { normbordercolor, "#000000", "#ad7fa8" },  // purple
+    { normbordercolor, "#000000", "#F2D4AD" },  // brown
+    { normbordercolor, "#ffffff", "#000000" },  // white
 };
 
 
@@ -48,6 +50,7 @@ static const Rule rules[] = {
     { NULL,             "urxvt",    "mephisto", 1 << 0,       False,       -1 },
     { "Virt-manager",   NULL,       NULL,       1 << 4,       False,       -1 },
     { "rdesktop",   	NULL,       NULL,       1 << 5,       False,       -1 },
+    { NULL,   			"urxvt",    "mensa",    0,       	  True,       -1 },
 };
 
 /* layout(s) */
