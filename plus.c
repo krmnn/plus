@@ -570,7 +570,6 @@ buttonpress(XEvent *e) {
 		unfocus(selmon->sel, True);
 		selmon = m;
 		focus(NULL);
-		warp(selmon->sel);
 	}
 	if(ev->window == selmon->barwin) {
 		i = x = 0;
@@ -1124,8 +1123,7 @@ drawcoloredtext(Monitor *m, char *text) {
 	while( *ptr ) {
 		for( i = 0; *ptr < 0 || *ptr > NumColors; i++, ptr++);
 		if( !*ptr ) break;
-		c=*ptr;
-		*ptr=0;
+		c=*ptr; *ptr=0;
 		if( i ) {
 			dc.w = m->ww - dc.x;
 			drawtext2(buf, col, False, first);
@@ -1266,6 +1264,7 @@ focusstack(const Arg *arg) {
 	if(c) {
 		focus(c);
 		restack(selmon);
+		warp(c);
 	}
 }
 void
@@ -1938,8 +1937,6 @@ restack(Monitor *m) {
 	}
 	XSync(dpy, False);
 	while(XCheckMaskEvent(dpy, EnterWindowMask, &ev));
-	if (m == selmon && (m->tagset[m->seltags] & m->sel->tags))
-		warp(m->sel);
 
 }
 
