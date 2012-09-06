@@ -588,10 +588,9 @@ buttonpress(XEvent *e) {
 			arg.ui = ev->x;
 			click = ClkWinTitle;
 		}
-	}
-	else if((c = wintoclient(ev->window))) {
+	} else if((c = wintoclient(ev->window))) {
 		focus(c);
-		XAllowEvents(dpy, ReplayPointer, CurrentTime);
+		//XAllowEvents(dpy, ReplayPointer, CurrentTime);
 		click = ClkClientWin;
 	}
 	for(i = 0; i < LENGTH(buttons); i++)
@@ -1937,6 +1936,9 @@ restack(Monitor *m) {
 	}
 	XSync(dpy, False);
 	while(XCheckMaskEvent(dpy, EnterWindowMask, &ev));
+	if (m == selmon && (m->tagset[m->seltags] & m->sel->tags))
+			warp(m->sel);
+
 
 }
 
