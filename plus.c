@@ -1936,8 +1936,8 @@ restack(Monitor *m) {
 	}
 	XSync(dpy, False);
 	while(XCheckMaskEvent(dpy, EnterWindowMask, &ev));
-	if (m == selmon && (m->tagset[m->seltags] & m->sel->tags))
-			warp(m->sel);
+	//if (m == selmon && (m->tagset[m->seltags] & m->sel->tags))
+	//		warp(m->sel);
 
 
 }
