@@ -1410,11 +1410,11 @@ grabbuttons(Client *c, Bool focused) {
 						XGrabButton(dpy, buttons[i].button,
 								buttons[i].mask | modifiers[j],
 								c->win, False, BUTTONMASK,
-								GrabModeSync, GrabModeSync, None, None);
+								GrabModeAsync, GrabModeSync, None, None);
 		}
 		else
 			XGrabButton(dpy, AnyButton, AnyModifier, c->win, False,
-					BUTTONMASK, GrabModeSync, GrabModeSync, None, None);
+					BUTTONMASK, GrabModeAsync, GrabModeSync, None, None);
 	}
 }
 
