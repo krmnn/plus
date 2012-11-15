@@ -945,7 +945,11 @@ drawbar(Monitor *m) {
 	for(i = 0; i < LENGTH(tags); i++) {
 		dc.w = TEXTW(tags[i]);
 		col = m->tagset[m->seltags] & 1 << i ? dc.sel : dc.norm;
-		drawtext(tags[i], col, urg & 1 << i);
+		if(urg & 1 << i) {
+			drawtext(tags[i], barcolors[2], False);
+		} else {
+			drawtext(tags[i], col, False);
+		}
 		drawsquare(m == selmon && selmon->sel && selmon->sel->tags & 1 << i,
 				occ & 1 << i, urg & 1 << i, col);
 		dc.x += dc.w;
